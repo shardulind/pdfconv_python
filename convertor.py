@@ -1,15 +1,19 @@
+
+import win32com.client
 import sys
 import os
-import comtypes.client
-from win32com import client
+import io
 import win32api
 import docx
 def wordtopdf(filepath,pdfpath,outputName):
+    print("inside wordtopdf")
+    
     wdFormatPDF = 17
     in_file = os.path.abspath(filepath)
     out = str(pdfpath) + outputName + '.pdf'
+    print(out)
     out_file = os.path.abspath(out)
-    word = comtypes.client.CreateObject('Word.Application')
+    word = win32com.client.Dispatch('Word.Application')
     doc = word.Documents.Open(in_file)
     doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
@@ -22,7 +26,7 @@ def wordpdf(filepath, pdfpath, outputName):
     out = str(pdfpath) + outputName + '.pdf'
     in_file = os.path.abspath(filepath)
     out_file = os.path.abspath(out)
-    word = comtypes.client.CreateObject('Word.Application')
+    word = win32com.client.Dispatch('Word.Application')
     doc = word.Documents.Open(in_file)
     doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
@@ -32,7 +36,7 @@ def wordpdf(filepath, pdfpath, outputName):
 
 
 def exceltopdf(filepath, pdfpath, outputName):
-    excel = client.DispatchEx("Excel.Application")
+    excel = win32com.client.DispatchEx("Excel.Application")
     excel.Visible = 0
 
     wb = excel.Workbooks.Open(filepath)
@@ -59,8 +63,9 @@ def texttopdf(filepath, pdfpath, outputName):
     docu=docx.Document()
     para=docu.add_paragraph(text)
     docu.save(out)
-    wordpdf()
+    wordpdf(filepath, pdfpath, outputName)
     f.close()
     return out
+
 
 

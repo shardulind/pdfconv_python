@@ -1,15 +1,16 @@
 from tkinter import filedialog
 from tkinter import *
 import os
-#mport convertor
+import convertor
 import mail
 import platform
 
 os_type = platform.system()
 
-
+isFileConverted = False
+outputName = ''
 filepath=''
-pdfpath='test.pdf'
+pdfpath='C:/Users/lenovo/Desktop/'
 login_flag=False
 username=''
 password=''
@@ -55,7 +56,12 @@ lblmin = Label(font = ('arial',15), text = "PDF Convertor")
 lblmin.grid(row=1, column=0)
 
 def trigSendEmail():
-
+    global isFileConverted
+    if isFileConverted == False:
+        trigSavePdf()
+        isFileConverted = True
+    
+    
     def trigemail():
         sendEmail()
 
@@ -96,12 +102,13 @@ def trigSendEmail():
 
 
 def trigSavePdf():
-    outputName = ''
+    
 
     def ok():
         global outputName
         outputName = str(e.get())
         print("value is " + outputName)
+        convert()
         top.destroy()
 
     #getting file name to be saved for pdf
@@ -115,26 +122,32 @@ def trigSavePdf():
     b.grid(row=2, column=0)
 
 
+    def convert():
+        ##outputName mhnje output pdf file ch nav kay asel te
+        ##extension mhnje file chi extension kay load kelellya
+        global filepath   ## he ji file load keliye tyacha path
+        global pdfpath    ## ha jith file store karaichiye ,, basically same dir
+        extension=filepath.split('.')[1]
 
-    ##outputName mhnje output pdf file ch nav kay asel te
-    ##extension mhnje file chi extension kay load kelellya
-    global filepath   ## he ji file load keliye tyacha path
-    global pdfpath    ## ha jith file store karaichiye ,, basically same dir
-    extension=filepath.split('.')[1]
-    if extension == 'docx':
-            # pdfpath = convertor.wordpdf(filepath,pdfpath,outputName)
-            pass #he pass nntr kadhun takaich
+        print(filepath)
+        print(pdfpath)
+        print(extension)
 
-    elif extention == 'txt':
-            # pdfpath = convertor.texttopdf(filepath,pdfpath,outputName)
-            pass
+        if extension == 'docx':
+             pdfpath = convertor.wordtopdf(filepath,pdfpath,outputName)
+             print(pdfpath)         
 
-    elif extension == 'xlsx':
-            # pdfpath = convertor.exceltopdf(filepath,pdfpath,outputName)
-            pass
+        elif extension == 'txt':
+             pdfpath = convertor.texttopdf(filepath,pdfpath,outputName)
+                 
 
-    #error else case add karaichiye
-    #pass kadhun tak nntr
+        elif extension == 'xlsx':
+             pdfpath = convertor.exceltopdf(filepath,pdfpath,outputName)
+                
+
+        isFileConverted = True
+        #error else case add karaichiye
+        #pass kadhun tak nntr
 
 
 
@@ -184,7 +197,7 @@ def getFile():
                                 initialdir = "/home/shardulind/Documents",
                                 title = "Select file",
                                 filetypes = (("Document","*.docx"),
-                                            ("spreadsheet","*.xlxs"),
+                                            ("spreadsheet","*.xlsx"),
                                             ("text","*.txt")))
         return filepath
     elif os_type == "Windows":
@@ -192,7 +205,7 @@ def getFile():
                                 initialdir = "C:\\Users\\",
                                 title = "Select file",
                                 filetypes = (("Document","*.docx"),
-                                            ("spreadsheet","*.xlxs"),
+                                            ("spreadsheet","*.xlsx"),
                                             ("text","*.txt")))
         return filepath
 
