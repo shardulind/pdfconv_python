@@ -13,7 +13,6 @@ def sendEmail(username, password, to, subject, pdfpath):
     msg['Subject'] = subject
     msg.attach(MIMEText(' ', 'plain'))
 
-    pdfpath = "/home/shardulind/Documents/os_a1.docx"
 
     attachment = open(pdfpath, "rb")
     p = MIMEBase('application', 'octet-stream')
