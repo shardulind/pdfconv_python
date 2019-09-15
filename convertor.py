@@ -64,5 +64,3 @@ def texttopdf(filepath, pdfpath, outputName):
     return out
 
 
-
-texttopdf()
